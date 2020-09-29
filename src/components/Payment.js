@@ -24,15 +24,18 @@ function Payment() {
 
   useEffect(() => {
     const getClientSecret = async () => {
-      console.log("Start USeEffect");
-
-      const response = await axios({
-        method: "post",
-        url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
-      });
-      console.log("clien secret is >>>", response.data.clientSecret);
-      setClientSecret(response.data.clientSecret);
+      if (user && basket.length > 0) {
+        const response = await axios({
+          method: "post",
+          url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
+        });
+        console.log("clien secret is >>>", response.data.clientSecret);
+        setClientSecret(response.data.clientSecret);
+      } else {
+        history.replace("/login");
+      }
     };
+
     getClientSecret();
   }, [basket]);
 
